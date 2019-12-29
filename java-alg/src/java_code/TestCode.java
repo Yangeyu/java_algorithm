@@ -1,60 +1,63 @@
 package java_code;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class TestCode {
 	public static void main(String[] args) {
-		double[] array = new double[] {
-				4.12, 6.421, 1.21, 3, 4, 9.3, 3.45, 5.3221,10
-		};
-		double[] sortArray = sort(array);
-		System.out.println(Arrays.toString(sortArray));
+		int[] numbers = {1,2,3,4,5};
+		for(int i = 0; i < 10; i++) {
+			numbers = findNextNumber(numbers);
+			outPutNumber(numbers);;
+		}
 	}
 	
-	public static double[] sort(double[] array) {
-		int len = array.length;
-		double min = array[0];
-		double max = array[0];
-		
-		for(int i = 1; i < len; i++) {
-			if(max < array[i]) {
-				max = array[i];
-			}
-			if(min > array[i]) {
-				min = array[i];
-			}
-		}
-		double d = max - min;
-		
-		int bucketSize = len;
-		List<LinkedList<Double>> bucketList = new 
-				ArrayList<LinkedList<Double>>(bucketSize);
-		for(int i = 0; i < len; i++) {
-			bucketList.add(new LinkedList<Double>());
+	
+	public static int[] findNextNumber(int[] numbers) {
+		//找到逆序的界限
+		int index = findTransferNumber(numbers);
+		if(index == 0) {
+			return null;
 		}
 		
-		for(int i = 0; i < len; i++) {
-			int num = (int) ((array[i]-min)*(bucketSize-1)/d);
-			bucketList.get(num).add(array[i]);
-		}
-		
-		for(int i = 0; i < bucketSize; i++) {
-			Collections.sort(bucketList.get(i));
-		}
-		
-		double[] sortArray = new double[len];
-		int index = 0;
-		for(LinkedList<Double> list : bucketList) {
-			for(Double el : list) {
-				sortArray[index++] = el;
+		exchangeNumber(numbers, index);
+		reverse(numbers, index);
+		return numbers;
+	}
+	
+	public static int findTransferNumber(int[] numbers) {
+		for(int i = numbers.length-1; i > 0; i--) {
+			if(numbers[i] > numbers[i-1]) {
+				return i;
 			}
 		}
-		
-		return sortArray;
+		return 0;
+	}
+	
+	public static int[] exchangeNumber(int[] numbers, int index) {
+		int temp = numbers[index-1];
+		for(int i = numbers.length-1; i > 0; i--) {
+			if(temp < numbers[i]) {
+				numbers[index-1] = numbers[i];
+				numbers[i] = temp;
+				break;
+			}
+		}
+		return numbers;
+	}
+	
+	public static int[] reverse(int[] numbers, int index) {
+		for(int i = index, j = numbers.length-1; i < j; i++, j--) {
+			int temp = numbers[i];
+			numbers[i] = numbers[j];
+			numbers[j] = temp;
+		}
+		return numbers;
+	}
+	
+	public static void outPutNumber(int[] numbers) {
+		for(int i : numbers) {
+			System.out.print(i);
+		}
+		System.out.println();
 	}
 }
