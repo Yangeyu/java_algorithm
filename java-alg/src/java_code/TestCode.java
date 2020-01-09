@@ -4,11 +4,10 @@ package java_code;
 
 public class TestCode {
 	public static void main(String[] args) {
-		int[] numbers = {1,2,3,4,5};
-		for(int i = 0; i < 10; i++) {
-			numbers = findNextNumber(numbers);
-			outPutNumber(numbers);;
-		}
+		int w = 10;
+		int[] p = {5,5,3,4,3};
+		int[] g = {400, 500, 200, 300, 350};
+		System.out.println(findNum(w, p, g));
 	}
 	
 	
@@ -60,4 +59,19 @@ public class TestCode {
 		}
 		System.out.println();
 	}
+	
+	public static int findNum(int w, int[] p, int[] g) {
+		int[] result = new int[w+1];
+		
+		for(int i = 0; i < g.length; i++) {
+			for(int j = w; j > 0; j--) {
+				if(j >= p[i]) {
+					result[j] = Math.max(result[j], result[j-p[i]] + g[i]);
+				}
+			}
+		}
+		return result[w];
+	}
+	
+	
 }
